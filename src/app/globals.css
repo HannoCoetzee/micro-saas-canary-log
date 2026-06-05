@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ub-accent: #c75b39;
+  --ub-accent-hover: #d46b4a;
+  --ub-surface: #0a0a0c;
+  --ub-surface-raised: #121214;
+  --ub-surface-overlay: #1a1a1e;
+  --ub-border: #2a2a2e;
+  --ub-text: #e8e6e3;
+  --ub-text-muted: #8a8885;
+}
+
+body {
+  background: var(--ub-surface);
+  color: var(--ub-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}

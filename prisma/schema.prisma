@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  password           String
+  stripeCustomerId   String?   @unique
+  subscriptionStatus String    @default("inactive")
+  plan               String    @default("free")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  canaries           Canary[]
+}
+
+model Canary {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  statement   String
+  publicKey   String?
+  signature   String?
+  frequency   String   @default("weekly")
+  status      String   @default("active")
+  lastSigned  DateTime?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  entries     CanaryEntry[]
+}
+
+model CanaryEntry {
+  id        String   @id @default(cuid())
+  canaryId  String
+  canary    Canary   @relation(fields: [canaryId], references: [id], onDelete: Cascade)
+  message   String
+  signature String?
+  createdAt DateTime @default(now())
+}
