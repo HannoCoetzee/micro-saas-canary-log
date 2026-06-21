@@ -4,6 +4,7 @@ import { ShieldCheck } from "lucide-react";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
+  icons: { icon: "/favicon.svg" },
   title: "CanaryLog — Transparency log & warrant canary",
   description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
 };
