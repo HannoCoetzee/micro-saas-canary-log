@@ -21,19 +21,19 @@ export default function Signup() {
   }
 
   return (
-    <div className="max-w-sm mx-auto px-6 py-20">
-      <h1 className="text-2xl font-bold mb-6">Create your CanaryLog account</h1>
+    <div className="mx-auto max-w-sm px-6 py-20">
+      <h1 className="text-2xl font-bold mb-6 tracking-tight">Create your CanaryLog account</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email"
-          className="w-full px-3 py-2 bg-[var(--ub-surface-raised)] border border-[var(--ub-border)] rounded text-sm" />
+          className="w-full px-3 py-2 bg-warm-50 border border-warm-200 rounded text-sm focus:outline-none focus:border-accent" />
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="Password (min 6 chars)" minLength={6}
-          className="w-full px-3 py-2 bg-[var(--ub-surface-raised)] border border-[var(--ub-border)] rounded text-sm" />
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        <button type="submit" className="w-full px-3 py-2 bg-[var(--ub-accent)] text-white rounded hover:bg-[var(--ub-accent-hover)] transition-colors text-sm">
+          className="w-full px-3 py-2 bg-warm-50 border border-warm-200 rounded text-sm focus:outline-none focus:border-accent" />
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        <button type="submit" className="w-full px-3 py-2 bg-accent text-white rounded hover:bg-accent-light transition-colors text-sm font-medium">
           Create account
         </button>
       </form>
-      <p className="mt-4 text-sm text-[var(--ub-text-muted)]">Already have an account? <Link href="/login" className="text-[var(--ub-accent)] hover:underline">Log in</Link></p>
+      <p className="mt-4 text-sm text-warm-500">Already have an account? <Link href="/login" className="text-accent hover:underline">Log in</Link></p>
     </div>
   );
 }
