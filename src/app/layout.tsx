@@ -1,33 +1,76 @@
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Nav } from "@/components/nav";
+import { Footer } from "@/components/footer";
 import "./globals.css";
-import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
-import { Analytics } from "@vercel/analytics/next";
 
-export const metadata = {
-  icons: { icon: "/favicon.svg" },
+export const metadata: Metadata = {
   title: "CanaryLog — Transparency log & warrant canary",
-  description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+  description:
+    "Publish a cryptographically signed warrant canary and transparency log for your service.",
+  icons: { icon: "/favicon.svg" },
+  metadataBase: new URL("https://canarylog.uncomfortablebudget.com"),
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "CanaryLog",
+    description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+    type: "website",
+    url: "https://canarylog.uncomfortablebudget.com",
+    siteName: "CanaryLog",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CanaryLog",
+    description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  authors: [{ name: "Uncomfortable Budget" }],
+  creator: "Uncomfortable Budget",
+  publisher: "Uncomfortable Budget",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Uncomfortable Budget",
+      url: "https://hub.uncomfortablebudget.com",
+      logo: "https://hub.uncomfortablebudget.com/logo.svg",
+      description: "A suite of affordable, focused Micro-SaaS tools built for indie founders.",
+      sameAs: [],
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "CanaryLog",
+      applicationCategory: "SecurityApplication",
+      operatingSystem: "Any",
+      url: "https://canarylog.uncomfortablebudget.com",
+      description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
-        <nav className="border-b border-[var(--ub-border)] px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-            <ShieldCheck size={20} className="text-[var(--ub-accent)]" />
-            CanaryLog
-          </Link>
-          <div className="flex items-center gap-4 text-sm text-[var(--ub-text-muted)]">
-            <Link href="/login" className="hover:text-[var(--ub-text)] transition-colors">Log in</Link>
-            <Link href="/signup" className="px-3 py-1.5 bg-[var(--ub-accent)] text-white rounded hover:bg-[var(--ub-accent-hover)] transition-colors">Get started</Link>
-          </div>
-        </nav>
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-[var(--ub-border)] px-6 py-4 text-center text-xs text-[var(--ub-text-muted)]">
-          <Link href="https://hub.uncomfortablebudget.com" className="hover:text-[var(--ub-text)]">← Back to Hub</Link>
-        </footer>
-        <Analytics />
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <Nav />
+        <div className="flex-1">{children}</div>
+        <Footer />
       </body>
     </html>
   );

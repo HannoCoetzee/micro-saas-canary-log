@@ -1,20 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --ub-accent: #c75b39;
-  --ub-accent-hover: #d46b4a;
-  --ub-surface: #0a0a0c;
-  --ub-surface-raised: #121214;
-  --ub-surface-overlay: #1a1a1e;
-  --ub-border: #2a2a2e;
-  --ub-text: #e8e6e3;
-  --ub-text-muted: #8a8885;
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-ink: #0f0f11;
+  --color-paper: #faf9f7;
+  --color-warm-50: #fdfcfa;
+  --color-warm-100: #f5f3ef;
+  --color-warm-200: #e6e2da;
+  --color-warm-300: #cec8bc;
+  --color-warm-400: #a89f93;
+  --color-warm-500: #85796d;
+  --color-warm-600: #635a50;
+  --color-warm-700: #4a423a;
+  --color-warm-800: #2d2a26;
+  --color-warm-900: #1c1b18;
+  --color-accent: #c75b12;
+  --color-accent-light: #e87a35;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--ub-surface);
-  color: var(--ub-text);
-  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-paper);
 }

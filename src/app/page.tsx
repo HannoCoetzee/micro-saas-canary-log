@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, FileCheck, Eye } from "lucide-react";
+import { motion } from "framer-motion";
+import { ShieldCheck, FileCheck, Eye, ArrowRight } from "lucide-react";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -10,36 +11,91 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-20">
-      <header>
-        <h1 className="text-4xl font-bold mb-2">CanaryLog</h1>
-        <p className="text-[var(--ub-text-muted)] mb-8">Publish a cryptographically signed warrant canary and transparency log for your service.</p>
-      </header>
-      <section aria-label="Features">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+    <div className="mx-auto max-w-6xl px-6 py-20">
+      <div className="mx-auto max-w-3xl text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-6 inline-block rounded-full bg-warm-100 px-4 py-1.5 text-sm font-medium text-warm-600 tracking-wide"
+        >
+          Cryptographic transparency for your service
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-5xl leading-tight font-semibold tracking-tight md:text-6xl"
+        >
+          <span className="text-accent">CanaryLog</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-warm-500"
+        >
+          Publish a cryptographically signed warrant canary and transparency log for your service.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
+          {user ? (
+            <Link
+              href="/dashboard"
+              className="group inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3.5 text-sm font-medium text-white transition hover:bg-accent-light"
+            >
+              Go to dashboard
+              <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/signup"
+                className="group inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3.5 text-sm font-medium text-white transition hover:bg-accent-light"
+              >
+                Get started free
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 rounded-lg border border-warm-200 px-7 py-3.5 text-sm font-medium transition hover:bg-warm-50"
+              >
+                Log in
+              </Link>
+            </>
+          )}
+        </motion.div>
+      </div>
+
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mt-20"
+        aria-label="Features"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
-            { icon: <ShieldCheck size={20} />, title: "Warrant canary", desc: "Publish signed statements that prove your service hasn't been compromised" },
-            { icon: <FileCheck size={20} />, title: "Transparency log", desc: "Append-only, timestamped entries with cryptographic verification" },
-            { icon: <Eye size={20} />, title: "Public verification", desc: "Anyone can verify your canary's signature and freshness" },
+            { icon: <ShieldCheck size={24} />, title: "Warrant canary", desc: "Publish signed statements that prove your service hasn't been compromised" },
+            { icon: <FileCheck size={24} />, title: "Transparency log", desc: "Append-only, timestamped entries with cryptographic verification" },
+            { icon: <Eye size={24} />, title: "Public verification", desc: "Anyone can verify your canary's signature and freshness" },
           ].map((f, i) => (
-            <article key={i} className="p-4 bg-[var(--ub-surface-raised)] border border-[var(--ub-border)] rounded">
-              <div className="text-[var(--ub-accent)] mb-2">{f.icon}</div>
-              <h3 className="font-semibold text-sm mb-1">{f.title}</h3>
-              <p className="text-xs text-[var(--ub-text-muted)]">{f.desc}</p>
+            <article key={i} className="p-6 bg-warm-50 border border-warm-200 rounded-lg">
+              <div className="text-accent mb-3">{f.icon}</div>
+              <h3 className="font-semibold text-base mb-1">{f.title}</h3>
+              <p className="text-sm text-warm-500">{f.desc}</p>
             </article>
           ))}
         </div>
-      </section>
-      <section aria-label="Call to action">
-        {user ? (
-          <Link href="/dashboard" className="text-[var(--ub-accent)] hover:underline">Go to dashboard →</Link>
-        ) : (
-          <div className="flex gap-4">
-            <Link href="/login" className="px-4 py-2 border border-[var(--ub-border)] rounded hover:border-[var(--ub-text-muted)] transition-colors">Log in</Link>
-            <Link href="/signup" className="px-4 py-2 bg-[var(--ub-accent)] text-white rounded hover:bg-[var(--ub-accent-hover)] transition-colors">Get started</Link>
-          </div>
-        )}
-      </section>
+      </motion.section>
     </div>
   );
 }
