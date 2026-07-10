@@ -1,7 +1,16 @@
 /**
- * Auth — local implementation (reverted from @hannocoetzee/micro-saas-shared)
+ * Auth — delegates verifyToken to @hannocoetzee/micro-saas-shared.
+ * signToken, cookie helpers, and getUserFromRequest stay local.
  */
-import { SignJWT, jwtVerify, type JWTPayload } from "jose";
+import { SignJWT, type JWTPayload } from "jose";
+import { verifyHubToken, readHubCookie, type HubJWTPayload } from "@hannocoetzee/micro-saas-shared/auth";
+
+// Local user type — maps shared HubJWTPayload (sub/email/plan) to legacy field names
+export interface LocalUser {
+  userId: string;
+  email: string;
+  token: string;
+}
 
 let _secret: Uint8Array | null = null;
 function getSecret(): Uint8Array {
@@ -24,31 +33,20 @@ export async function signToken(payload: object) {
     .sign(getSecret());
 }
 
-interface TokenPayload extends JWTPayload {
-  sub?: string;
-  email?: string;
-  userId?: string;
+export async function verifyToken(token: string): Promise<HubJWTPayload | null> {
+  return verifyHubToken(token);
 }
 
-export async function verifyToken(token: string): Promise<TokenPayload | null> {
-  try {
-    const { payload } = await jwtVerify(token, getSecret());
-    return payload as TokenPayload;
-  } catch {
-    return null;
-  }
-}
-
-export async function getUserFromRequest(req: Request) {
+export async function getUserFromRequest(req: Request): Promise<LocalUser | null> {
   const cookieHeader = req.headers.get("cookie");
   if (!cookieHeader) return null;
-  const match = cookieHeader.match(/token=([^;]+)/);
-  if (!match) return null;
-  const payload = await verifyToken(decodeURIComponent(match[1]));
+  const token = readHubCookie(cookieHeader, "token") ?? readHubCookie(cookieHeader, "hub_session");
+  if (!token) return null;
+  const payload = await verifyHubToken(token);
   if (!payload) return null;
-  const userId = payload.sub || payload.userId;
+  const userId = payload.sub;
   if (!userId) return null;
-  return { userId, email: payload.email ?? "", token: "" };
+  return { userId, email: payload.email ?? "", token };
 }
 
 // Cookie helpers
