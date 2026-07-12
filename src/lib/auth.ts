@@ -3,7 +3,7 @@
  * signToken, cookie helpers, and getUserFromRequest stay local.
  */
 import { SignJWT, type JWTPayload } from "jose";
-import { verifyHubToken, readHubCookie, type HubJWTPayload } from "@hannocoetzee/micro-saas-shared/auth";
+import { verifyHubToken, readHubCookie, type HubJWTPayload } from "./hub-auth";
 
 // Local user type — maps shared HubJWTPayload (sub/email/plan) to legacy field names
 export interface LocalUser {
