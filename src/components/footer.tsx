@@ -10,7 +10,7 @@ export function Footer() {
 
         <nav className="flex flex-wrap items-center gap-6 text-sm text-warm-500">
           <Link href="/" className="transition hover:text-ink">Home</Link>
-          <Link href="https://hub.uncomfortablebudget.com" className="transition hover:text-ink">Hub</Link>
+          <a href="https://hub.uncomfortablebudget.com" className="transition hover:text-ink">Hub</a>
           <a href="mailto:hello@uncomfortablebudget.com" className="transition hover:text-ink">Contact</a>
           <a href="https://github.com/HannoCoetzee" target="_blank" rel="noopener noreferrer" className="transition hover:text-ink">GitHub</a>
         </nav>

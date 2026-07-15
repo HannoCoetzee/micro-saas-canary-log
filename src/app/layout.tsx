@@ -8,55 +8,50 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "CanaryLog — Transparency log & warrant canary",
-  description:
-    "Publish a cryptographically signed warrant canary and transparency log for your service.",
-  icons: { icon: "/favicon.svg" },
+  description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+  icons: {
+    icon: "/favicon.svg",
+  },
   metadataBase: new URL("https://canarylog.uncomfortablebudget.com"),
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "CanaryLog",
+    title: "CanaryLog — Transparency log & warrant canary",
     description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
     type: "website",
     url: "https://canarylog.uncomfortablebudget.com",
-    siteName: "CanaryLog",
+    siteName: "Uncomfortable Budget",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CanaryLog",
+    title: "CanaryLog — Transparency log & warrant canary",
     description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
-  authors: [{ name: "Uncomfortable Budget" }],
-  creator: "Uncomfortable Budget",
-  publisher: "Uncomfortable Budget",
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      name: "Uncomfortable Budget",
-      url: "https://hub.uncomfortablebudget.com",
-      logo: "https://hub.uncomfortablebudget.com/logo.svg",
-      description: "A suite of affordable, focused Micro-SaaS tools built for indie founders.",
-      sameAs: [],
-    },
-    {
-      "@type": "SoftwareApplication",
-      name: "CanaryLog",
-      applicationCategory: "SecurityApplication",
-      operatingSystem: "Any",
-      url: "https://canarylog.uncomfortablebudget.com",
-      description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
-      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    },
-  ],
+  "@type": "SoftwareApplication",
+  name: "CanaryLog",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Any",
+  url: "https://canarylog.uncomfortablebudget.com",
+  description: "Publish a cryptographically signed warrant canary and transparency log for your service.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
