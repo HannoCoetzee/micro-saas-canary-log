@@ -1,0 +1,37 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      JWT_SECRET: ci-test-secret-must-be-32-chars-long
+      DATABASE_URL: postgresql://dummy@localhost/dummy?sslmode=require
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install --legacy-peer-deps
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN || github.token }}
+      - name: Generate Prisma Client
+        run: npx prisma generate || true
+        if: hashFiles('prisma/schema.prisma') != ''
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+        env:
+          CI: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
