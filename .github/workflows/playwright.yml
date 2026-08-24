@@ -7,21 +7,31 @@ on:
     branches: [main]
 
 jobs:
-  dispatch:
-    runs-on: ubuntu-latest
+  e2e:
+    runs-on: self-hosted
+    timeout-minutes: 20
+    env:
+      JWT_SECRET: ci-test-secret-must-be-32-chars-long
+      DATABASE_URL: postgresql://dummy@localhost/dummy?sslmode=require
+      CI: true
     steps:
-      - name: Dispatch to fleet-ci
-        uses: actions/github-script@v7
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          github-token: ${{ secrets.FLEET_CI_TOKEN }}
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: 'HannoCoetzee',
-              repo: 'fleet-ci',
-              event_type: 'run-playwright',
-              client_payload: {
-                repo: 'micro-saas-canary-log',
-                ref: context.ref,
-                pr_number: context.payload.pull_request?.number || ''
-              }
-            });
+          node-version: 24
+      - run: npm install --legacy-peer-deps --ignore-scripts
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN || github.token }}
+      - run: npx prisma generate || true
+        if: hashFiles('prisma/schema.prisma') != ''
+      - run: npm run build || true
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN || github.token }}
+      - run: npx playwright install chromium
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
