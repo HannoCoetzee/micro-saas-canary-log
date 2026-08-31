@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Use a unique port in CI to avoid conflicts when multiple repos run
+// Playwright concurrently on the same self-hosted runner. Falls back to
+// the standard port 3000 in local development.
+const PORT = process.env.CI ? Number(process.env.E2E_PORT) || 3456 : 3000;
+
 export default defineConfig({
   testDir: './e2e',
   timeout: 60000,
@@ -10,7 +15,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -20,10 +25,17 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    port: 3000,
-    reuseExistingServer: true,
-    timeout: 120000,
-  },
+  webServer: process.env.CI
+    ? {
+        command: `npm run start -- -p ${PORT}`,
+        port: PORT,
+        reuseExistingServer: false,
+        timeout: 120000,
+      }
+    : {
+        command: `npm run dev -- -p ${PORT}`,
+        port: PORT,
+        reuseExistingServer: true,
+        timeout: 120000,
+      },
 });
