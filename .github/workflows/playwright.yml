@@ -14,6 +14,7 @@ jobs:
       JWT_SECRET: ci-test-secret-must-be-32-chars-long
       DATABASE_URL: postgresql://dummy@localhost/dummy?sslmode=require
       CI: true
+      E2E_PORT: "3188"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,7 +25,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN || github.token }}
       - run: npx prisma generate || true
         if: hashFiles('prisma/schema.prisma') != ''
-      - run: npm run build || true
+      - run: npm run build
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN || github.token }}
       - run: npx playwright install chromium
